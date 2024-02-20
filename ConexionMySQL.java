@@ -22,5 +22,5 @@ public class ConexionMySQL {
 
     }
     //Metodos
-    public void Cone
+
 }

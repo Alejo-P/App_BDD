@@ -75,12 +75,18 @@ public class Ventana_Principal {
                 usuario.setEdad(Integer.parseInt(Insercion_edad.getText()));
                 usuario.setCurso(Insercion_combobox.getSelectedItem().toString());
                 if (usuario.regitroCompleto() && usuario.getImagen().length!=0){
-                    int num=conexionMySQL.insertarRegustros(usuario);
-                    if (num>0){
-                        JOptionPane.showMessageDialog(Ventana_principal, "Registro insertado correctamente", "Acción Exitosa", JOptionPane.INFORMATION_MESSAGE);
-                    }
-                    else{
-                        JOptionPane.showMessageDialog(Ventana_principal, "No se inserto el registro", "Error en la inserción", JOptionPane.ERROR_MESSAGE);
+                    try{
+                        int num=conexionMySQL.insertarRegustros(usuario);
+                        if (num>0){
+                            JOptionPane.showMessageDialog(Ventana_principal, "Registro insertado correctamente", "Acción Exitosa", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                        else{
+                            JOptionPane.showMessageDialog(Ventana_principal, "No se inserto el registro", "Error en la inserción", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } catch (Exception e1){
+                        int opcion = JOptionPane.showConfirmDialog(Ventana_principal, "Desea actualizar el registro", "Registro repetido", JOptionPane.YES_NO_OPTION);
+                        String mensajeError = "Error en la accion: %s".formatted(String.valueOf(e1));
+                        JOptionPane.showMessageDialog(Ventana_principal, mensajeError, "Error en la accioon realizada", JOptionPane.ERROR_MESSAGE);
                     }
                 }
                 else{
@@ -103,13 +109,32 @@ public class Ventana_Principal {
                         Imagen.close();
                         usuario.setImagen(imagenBytes);
 
-                        //File file = archivo.getSelectedFile();
-                        //imagenBytes[0] = Files.readAllBytes(file.toPath());
                         JOptionPane.showMessageDialog(Ventana_principal, "Imagen cargada y lista para ser insertada en la base de datos", "Acción Exitosa", JOptionPane.INFORMATION_MESSAGE);
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
                 }
+            }
+        });
+        eliminarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String cons=Eliminacion_cedula.getText();
+                if (!cons.isEmpty())
+                {
+                    int columnas = conexionMySQL.Modificar("DELETE FROM usuarios WHERE cedula = %s".formatted(cons));
+                    if (columnas>0){
+                        JOptionPane.showMessageDialog(Ventana_principal, "Registro eliminado exitosamente", "Eliminacion exitosa", JOptionPane.INFORMATION_MESSAGE);
+                    }
+                    else{
+                        String mensajeError = "Ningun registro coincide con : %s".formatted(cons);
+                        JOptionPane.showMessageDialog(Ventana_principal, mensajeError, "Error en la eliminacion", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+                else{
+                    JOptionPane.showMessageDialog(Ventana_principal, "Llene el campo antes ed presionar el boton", "Accion invalida", JOptionPane.ERROR_MESSAGE);
+                }
+
             }
         });
     }

@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -112,7 +113,6 @@ public class ConexionMySQL {
             for (String sentencia : sentenciasSQL) {
                 if (SQL_query.startsWith(sentencia)) {
                     int ejecucion = statement.executeUpdate(SQL_query);
-                    conexion.commit();
                     return ejecucion;
                 }
             }
@@ -172,7 +172,7 @@ public class ConexionMySQL {
         return sb.toString();
     }
 
-    public int insertarRegustros(Registro registro) {
+    public int insertarRegustros(Registro registro) throws SQLException {
         try {
             PreparedStatement ps = conexion.prepareStatement("INSERT INTO usuarios (cedula, nombre, apellido, direccion, telefono, edad, curso, imagen) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
             ps.setInt(1, registro.getCedula());
@@ -184,9 +184,34 @@ public class ConexionMySQL {
             ps.setString(7, registro.getCurso());
             ps.setBytes(8, registro.getImagen());
             return ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return -1;
+        } catch (SQLIntegrityConstraintViolationException e) {
+            try {
+                int opcion = JOptionPane.showConfirmDialog(null, "Desea actualizar el registro", "Registro repetido", JOptionPane.YES_NO_OPTION);
+                if (opcion == JOptionPane.YES_OPTION) {
+                    JOptionPane.showMessageDialog(null, "Registro actualizado", "Accion Exitosa", JOptionPane.INFORMATION_MESSAGE);
+                    return actualizarRegistro(registro);
+                }
+                else{
+                    JOptionPane.showMessageDialog(null, "Registro no actualizado", "No realizo ninguna accion", JOptionPane.INFORMATION_MESSAGE);
+                    return -1;
+                }
+            } catch (SQLException sqle) {
+                return -1;
+            }
         }
+    }
+
+    private int actualizarRegistro(Registro registro) throws SQLException {
+        PreparedStatement ps = conexion.prepareStatement("UPDATE usuarios SET nombre = ?, apellido = ?, direccion = ?, telefono = ?, edad = ?, curso = ?, imagen = ? WHERE cedula = ?");
+        ps.setString(1, registro.getNombre());
+        ps.setString(2, registro.getApellido());
+        ps.setString(3, registro.getDireccion());
+        ps.setString(4, registro.getTelefono());
+        ps.setInt(5, registro.getEdad());
+        ps.setString(6, registro.getCurso());
+        ps.setBytes(7, registro.getImagen());
+        ps.setInt(8, registro.getCedula());
+        // Ejecutar la sentencia UPDATE y devolver el número de filas afectadas
+        return ps.executeUpdate();
     }
 }

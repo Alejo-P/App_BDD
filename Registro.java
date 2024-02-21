@@ -22,7 +22,7 @@ public class Registro {
     }
     // Metodos
     public boolean regitroCompleto(){
-        if (this.cedula!=0 && !this.nombre.isEmpty() && !this.apellido.isEmpty() && !this.direccion.isEmpty() && !this.telefono.isEmpty() && !new String(String.valueOf(this.edad)).isEmpty() && !this.curso.isEmpty() && this.imagen!=null){
+        if (LongitudNumeros(this.cedula)==10 && !this.nombre.isEmpty() && !this.apellido.isEmpty() && !this.direccion.isEmpty() && LongitudNumeros(Integer.parseInt(this.telefono))==10 && LongitudNumeros(this.edad)!=0 && !this.curso.isEmpty() && this.imagen!=null){
             return true;
         }
         else{
@@ -91,5 +91,10 @@ public class Registro {
 
     public void setImagen(byte[] imagen) {
         this.imagen = imagen;
+    }
+
+    private int LongitudNumeros(int numero){
+        String Cadena = "%d".formatted(numero);
+        return Cadena.length();
     }
 }

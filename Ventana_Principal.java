@@ -67,30 +67,34 @@ public class Ventana_Principal {
         insertarOActualizarRegistroButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                usuario.setCedula(Integer.parseInt(Insercion_cedula.getText()));
-                usuario.setNombre(Insercion_nombre.getText());
-                usuario.setApellido(Insercion_apellido.getText());
-                usuario.setDireccion(Insercion_direccion.getText());
-                usuario.setTelefono(Insercion_telefono.getText());
-                usuario.setEdad(Integer.parseInt(Insercion_edad.getText()));
-                usuario.setCurso(Insercion_combobox.getSelectedItem().toString());
-                if (usuario.regitroCompleto() && usuario.getImagen().length!=0){
-                    try{
-                        int num=conexionMySQL.insertarRegustros(usuario);
-                        if (num>0){
-                            JOptionPane.showMessageDialog(Ventana_principal, "Registro insertado correctamente", "Acción Exitosa", JOptionPane.INFORMATION_MESSAGE);
+                try {
+                    usuario.setCedula(Integer.parseInt(Insercion_cedula.getText()));
+                    usuario.setNombre(Insercion_nombre.getText());
+                    usuario.setApellido(Insercion_apellido.getText());
+                    usuario.setDireccion(Insercion_direccion.getText());
+                    usuario.setTelefono(Insercion_telefono.getText());
+                    usuario.setEdad(Integer.parseInt(Insercion_edad.getText()));
+                    usuario.setCurso(Insercion_combobox.getSelectedItem().toString());
+                    if (usuario.regitroCompleto() && usuario.getImagen().length!=0){
+                        try{
+                            int num=conexionMySQL.insertarRegustros(usuario);
+                            if (num>0){
+                                JOptionPane.showMessageDialog(Ventana_principal, "Registro insertado correctamente", "Acción Exitosa", JOptionPane.INFORMATION_MESSAGE);
+                            }
+                            else{
+                                JOptionPane.showMessageDialog(Ventana_principal, "No se inserto el registro", "Error en la inserción", JOptionPane.ERROR_MESSAGE);
+                            }
+                        } catch (Exception e1){
+                            int opcion = JOptionPane.showConfirmDialog(Ventana_principal, "Desea actualizar el registro", "Registro repetido", JOptionPane.YES_NO_OPTION);
+                            String mensajeError = "Error en la accion: %s".formatted(String.valueOf(e1));
+                            JOptionPane.showMessageDialog(Ventana_principal, mensajeError, "Error en la accioon realizada", JOptionPane.ERROR_MESSAGE);
                         }
-                        else{
-                            JOptionPane.showMessageDialog(Ventana_principal, "No se inserto el registro", "Error en la inserción", JOptionPane.ERROR_MESSAGE);
-                        }
-                    } catch (Exception e1){
-                        int opcion = JOptionPane.showConfirmDialog(Ventana_principal, "Desea actualizar el registro", "Registro repetido", JOptionPane.YES_NO_OPTION);
-                        String mensajeError = "Error en la accion: %s".formatted(String.valueOf(e1));
-                        JOptionPane.showMessageDialog(Ventana_principal, mensajeError, "Error en la accioon realizada", JOptionPane.ERROR_MESSAGE);
                     }
-                }
-                else{
-                    JOptionPane.showMessageDialog(Ventana_principal, "Por favor, llene todos los campos y cargue una imagen", "Error en la entrada de datos", JOptionPane.ERROR_MESSAGE);
+                    else{
+                        JOptionPane.showMessageDialog(Ventana_principal, "Por favor, llene adecuadamente todos los campos y cargue una imagen\nCampos Cedula y Telefono de 10 digitos,\ny llene todos los campos solicitados) ", "Error en la entrada de datos", JOptionPane.ERROR_MESSAGE);
+                    }
+                }catch (NumberFormatException nfe){
+                    JOptionPane.showMessageDialog(Ventana_principal, "Inserte un valor numerico en los campos Cedula y Edad", "Datos Invalidos", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });

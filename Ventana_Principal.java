@@ -7,6 +7,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 
+
+
 public class Ventana_Principal {
     private JTabbedPane tabbedPane1;
     private JTextField Consulta_cedula;
@@ -120,6 +122,8 @@ public class Ventana_Principal {
                 }
             }
         });
+
+
         eliminarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

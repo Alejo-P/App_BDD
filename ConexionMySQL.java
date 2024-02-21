@@ -54,16 +54,23 @@ public class ConexionMySQL {
         boolean find = false;
         try {
             if (SQL_query.startsWith("SELECT") || SQL_query.startsWith("SHOW") || SQL_query.startsWith("DESCRIBE")) {
-                ResultSet resultSet = statement.executeQuery(SQL_query);
+                ResultSet resultado = statement.executeQuery(SQL_query);
                 List<Object[]> info = new ArrayList<>();
-                while (resultSet.next()) {
-                    ResultSetMetaData metaData = resultSet.getMetaData();
+                while (resultado.next()) {
+                    ResultSetMetaData metaData = resultado.getMetaData();
                     int columnCount = metaData.getColumnCount();
                     Object[] row = new Object[columnCount];
                     for (int i = 1; i <= columnCount; i++) {
-                        row[i - 1] = resultSet.getObject(i);
+                        row[i - 1] = resultado.getObject(i);
                     }
                     info.add(row);
+                }
+
+                for (int i = 0; i < info.size(); i++) {
+                    for (int j = 0; j < info.get(i).length; j++) {
+                        System.out.print(info.get(i)[j] + " ");
+                    }
+                    System.out.println();
                 }
 
                 for (Map<String, Object> consulta : consultas) {

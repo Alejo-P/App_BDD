@@ -18,12 +18,22 @@ public class Ventana_Principal {
     private JTextField Eliminacion_cedula;
     private JButton eliminarButton;
     JPanel Ventana_principal;
+    private boolean conn;
+    private ConexionMySQL conexionMySQL;
 
     public Ventana_Principal() {
+        conexionMySQL = new ConexionMySQL();
         consultarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                conn=conexionMySQL.Conexion("jdbc:mysql://uv8e5bhcj06tdvic:ME3Yq8U3Cax9OIjbHqdq@bfgwcnxsobb1g6asgq4d-mysql.services.clever-cloud.com:3306/bfgwcnxsobb1g6asgq4d", "uv8e5bhcj06tdvic", "ME3Yq8U3Cax9OIjbHqdq");
+                if (conn){
+                    System.out.println("Conexion establecida");
+                }
+                else{
+                    System.out.println("Conexion no establecida");
+                }
             }
         });
     }

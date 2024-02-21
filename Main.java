@@ -12,5 +12,6 @@ public class Main {
         Inicio.pack();
         Inicio.setSize(850, 300);
         Inicio.setVisible(true);
+
     }
 }

@@ -113,6 +113,14 @@ public class Ventana_Principal {
                         FileInputStream Imagen = new FileInputStream(archivo.getSelectedFile());
                         byte[] imagenBytes= new byte[(int) archivoImagen.length()];
                         Imagen.close();
+                        JFrame imgs = new JFrame("Visor de imagenes");
+                        imgs.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                        imgs.setContentPane(new Imagen(archivoImagen).Img);
+                        imgs.setLocationRelativeTo(null);
+                        imgs.setResizable(false);
+                        imgs.pack();
+                        imgs.setSize(400, 400);
+                        imgs.setVisible(true);
                         usuario.setImagen(imagenBytes);
 
                         JOptionPane.showMessageDialog(Ventana_principal, "Imagen cargada y lista para ser insertada en la base de datos", "Acción Exitosa", JOptionPane.INFORMATION_MESSAGE);

@@ -27,12 +27,13 @@ public class Ventana_Principal {
     private JScrollPane Tabla_scroll;
     private boolean conn;
     private ConexionMySQL conexionMySQL;
+    private Registro usuario;
 
     public Ventana_Principal() {
         conexionMySQL = new ConexionMySQL();
+        usuario = new Registro();
         conn=conexionMySQL.Conexion("jdbc:mysql://uv8e5bhcj06tdvic:ME3Yq8U3Cax9OIjbHqdq@bfgwcnxsobb1g6asgq4d-mysql.services.clever-cloud.com:3306/bfgwcnxsobb1g6asgq4d", "uv8e5bhcj06tdvic", "ME3Yq8U3Cax9OIjbHqdq");
         String[] Columnas = {"Cedula", "Nombre", "Apellido", "Fecha Matricula", "Periodo", "Direccion", "Telefono", "Edad", "Curso", "Imagen"};
-        final byte[][] imagenBytes = {null};
         consultarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -66,17 +67,15 @@ public class Ventana_Principal {
         insertarOActualizarRegistroButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String cedula=Insercion_cedula.getText();
-                String nombre=Insercion_nombre.getText();
-                String apellido=Insercion_apellido.getText();
-                String direccion=Insercion_direccion.getText();
-                String telefono=Insercion_telefono.getText();
-                String edad=Insercion_edad.getText();
-                String curso=Insercion_combobox.getSelectedItem().toString();
-                boolean imagen = imagenBytes[0].length==0;
-                if (!cedula.isEmpty() && !nombre.isEmpty() && !apellido.isEmpty() && !direccion.isEmpty() && !telefono.isEmpty() && !edad.isEmpty() && !curso.isEmpty() && !imagen){
-                    int num=conexionMySQL.Modificar("INSERT INTO usuarios (cedula, nombre, apellido, direccion, telefono, edad, curso, imagen) VALUES (%d, %s, %s, %s, %s, %d, %s, %s)".formatted(Integer.parseInt(cedula), nombre, apellido, direccion, telefono, Integer.parseInt(edad), curso, imagenBytes[0]));
-                    System.out.println(num);
+                usuario.setCedula(Integer.parseInt(Insercion_cedula.getText()));
+                usuario.setNombre(Insercion_nombre.getText());
+                usuario.setApellido(Insercion_apellido.getText());
+                usuario.setDireccion(Insercion_direccion.getText());
+                usuario.setTelefono(Insercion_telefono.getText());
+                usuario.setEdad(Integer.parseInt(Insercion_edad.getText()));
+                usuario.setCurso(Insercion_combobox.getSelectedItem().toString());
+                if (usuario.regitroCompleto() && usuario.getImagen().length!=0){
+                    int num=conexionMySQL.insertarRegustros(usuario);
                     if (num>0){
                         JOptionPane.showMessageDialog(Ventana_principal, "Registro insertado correctamente", "Acción Exitosa", JOptionPane.INFORMATION_MESSAGE);
                     }
@@ -100,9 +99,9 @@ public class Ventana_Principal {
                     try {
                         // Leer la imagen desde el archivo seleccionado
                         FileInputStream Imagen = new FileInputStream(archivo.getSelectedFile());
-                        imagenBytes[0] = new byte[(int) archivoImagen.length()];
-                        Imagen.read(imagenBytes[0]);
+                        byte[] imagenBytes= new byte[(int) archivoImagen.length()];
                         Imagen.close();
+                        usuario.setImagen(imagenBytes);
 
                         //File file = archivo.getSelectedFile();
                         //imagenBytes[0] = Files.readAllBytes(file.toPath());

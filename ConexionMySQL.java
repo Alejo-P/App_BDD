@@ -171,4 +171,22 @@ public class ConexionMySQL {
         }
         return sb.toString();
     }
+
+    public int insertarRegustros(Registro registro) {
+        try {
+            PreparedStatement ps = conexion.prepareStatement("INSERT INTO usuarios (cedula, nombre, apellido, direccion, telefono, edad, curso, imagen) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            ps.setInt(1, registro.getCedula());
+            ps.setString(2, registro.getNombre());
+            ps.setString(3, registro.getApellido());
+            ps.setString(4, registro.getDireccion());
+            ps.setString(5, registro.getTelefono());
+            ps.setInt(6, registro.getEdad());
+            ps.setString(7, registro.getCurso());
+            ps.setBytes(8, registro.getImagen());
+            return ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }
 }

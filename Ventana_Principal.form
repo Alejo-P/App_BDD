@@ -56,7 +56,7 @@
               </component>
               <component id="adcad" class="javax.swing.JButton" binding="consultarButton" default-binding="true">
                 <constraints>
-                  <grid row="2" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="2" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Consultar"/>
@@ -243,7 +243,7 @@
               </component>
               <component id="bb09f" class="javax.swing.JButton" binding="insertarOActualizarRegistroButton" default-binding="true">
                 <constraints>
-                  <grid row="6" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="6" column="0" row-span="1" col-span="4" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Insertar o actualizar registro"/>
@@ -285,7 +285,7 @@
               </component>
               <component id="63a4a" class="javax.swing.JButton" binding="eliminarButton" default-binding="true">
                 <constraints>
-                  <grid row="2" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                  <grid row="2" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
                   <text value="Eliminar"/>

@@ -50,6 +50,14 @@ public class ConexionMySQL {
         return estado;
     }
 
+    /**
+     *Consulta a la base de datos
+     *
+     * @param SQL_query Consulta SQL para la base de datos,
+     * tiene que ser (SELECT, SHOW, DESCRIBE)
+     * @return ID de la consulta realizada
+     * @throws IllegalArgumentException Si la sentencia no es una sentencia de consulta válida
+     * */
     public String Consulta(String SQL_query) {
         boolean find = false;
         try {
@@ -64,13 +72,6 @@ public class ConexionMySQL {
                         row[i - 1] = resultado.getObject(i);
                     }
                     info.add(row);
-                }
-
-                for (int i = 0; i < info.size(); i++) {
-                    for (int j = 0; j < info.get(i).length; j++) {
-                        System.out.print(info.get(i)[j] + " ");
-                    }
-                    System.out.println();
                 }
 
                 for (Map<String, Object> consulta : consultas) {
@@ -97,6 +98,69 @@ public class ConexionMySQL {
             return null;
         }
     }
+
+    /**
+     * Modificar la estructura de la base de datos
+     * @param SQL_query Sentencia SQL para interactuar con la base de datos,
+     * tiene que ser DML(INSERT, UPDATE, DELETE) o DDL(ALTER, DROP, CREATE)
+     * @return Número de filas afectadas por la interacción
+     * @throws IllegalArgumentException Si la sentencia no pertenece a sentencia de modificación de información*/
+    public int Modificar(String SQL_query) {
+        boolean find = false;
+        String[] sentenciasSQL = {"INSERT", "UPDATE", "DELETE", "ALTER", "DROP", "CREATE"};
+        try {
+            for (String sentencia : sentenciasSQL) {
+                if (SQL_query.startsWith(sentencia)) {
+                    int ejecucion = statement.executeUpdate(SQL_query);
+                    conexion.commit();
+                    return ejecucion;
+                }
+            }
+            if (!find) {
+                throw new IllegalArgumentException("La sentencia " + SQL_query + " no es una sentencia de modificación válida");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    /**
+     * Obtener los datos de una consulta previa
+     * @param ID_Consulta ID de la consulta (valor obtenido al usar el método Consulta())
+     * @return Información de la consulta buscada
+     **/
+    public Object[][] Obtener_valores(String ID_Consulta) {
+        boolean find = false;
+        for (Map<String, Object> consulta : consultas) {
+            if (consulta.get("ID").equals(ID_Consulta)) {
+                find = true;
+                List<Object[]> valor = (List<Object[]>) consulta.get("Consulta");
+                Object[][] result = new Object[valor.size()][];
+                for (int i = 0; i < valor.size(); i++) {
+                    result[i] = valor.get(i);
+                }
+                return result;
+            }
+        }
+        if (!find) {
+            System.out.println("No existe una consulta con el ID " + ID_Consulta);
+        }
+        return null;
+    }
+    /**
+     * Cerrar la conexión a la base de datos,
+     * cierra la conexión actual del servidor de la base de datos*/
+    public void Cerrar_conexion() {
+        try {
+            consultas.clear();
+            statement.close();
+            conexion.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     private String RandomString() {
         String caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         StringBuilder sb = new StringBuilder(5);

@@ -12,6 +12,7 @@ public class Imagen {
     public Imagen(File ruta) {
         ImageIcon imagen = new ImageIcon(String.valueOf(ruta));
         imagen1.setIcon(imagen);
+
         usarEstaImagenButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

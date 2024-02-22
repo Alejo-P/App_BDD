@@ -95,7 +95,6 @@ public class ConexionMySQL {
                 throw new IllegalArgumentException("La sentencia " + SQL_query + " no es una sentencia de consulta válida");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -189,7 +188,8 @@ public class ConexionMySQL {
                 int opcion = JOptionPane.showConfirmDialog(null, "Desea actualizar el registro", "Registro repetido", JOptionPane.YES_NO_OPTION);
                 if (opcion == JOptionPane.YES_OPTION) {
                     JOptionPane.showMessageDialog(null, "Registro actualizado", "Accion Exitosa", JOptionPane.INFORMATION_MESSAGE);
-                    return actualizarRegistro(registro);
+                    actualizarRegistro(registro);
+                    return -1;
                 }
                 else{
                     JOptionPane.showMessageDialog(null, "Registro no actualizado", "No realizo ninguna accion", JOptionPane.INFORMATION_MESSAGE);

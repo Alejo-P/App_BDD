@@ -22,7 +22,7 @@ public class Registro {
     }
     // Metodos
     public boolean regitroCompleto(){
-        if (LongitudNumeros(this.cedula)==10 && !this.nombre.isEmpty() && !this.apellido.isEmpty() && !this.direccion.isEmpty() && LongitudNumeros(Integer.parseInt(this.telefono))==10 && LongitudNumeros(this.edad)!=0 && !this.curso.isEmpty() && this.imagen!=null){
+        if (LongitudNumeros(this.cedula)==10 && !this.nombre.isEmpty() && !this.apellido.isEmpty() && !this.direccion.isEmpty() && this.telefono.length()==10 && LongitudNumeros(this.edad)!=0 && !this.curso.isEmpty() && this.imagen!=null){
             return true;
         }
         else{

@@ -3,11 +3,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.nio.file.Files;
-
-
 
 public class Ventana_Principal {
     private JTabbedPane tabbedPane1;
@@ -83,9 +78,10 @@ public class Ventana_Principal {
                             if (num>0){
                                 JOptionPane.showMessageDialog(Ventana_principal, "Registro insertado correctamente", "Acción Exitosa", JOptionPane.INFORMATION_MESSAGE);
                             }
-                            else{
+                            else if (num==0){
                                 JOptionPane.showMessageDialog(Ventana_principal, "No se inserto el registro", "Error en la inserción", JOptionPane.ERROR_MESSAGE);
                             }
+
                         } catch (Exception e1){
                             int opcion = JOptionPane.showConfirmDialog(Ventana_principal, "Desea actualizar el registro", "Registro repetido", JOptionPane.YES_NO_OPTION);
                             String mensajeError = "Error en la accion: %s".formatted(String.valueOf(e1));
@@ -108,29 +104,17 @@ public class Ventana_Principal {
                 int ventana = archivo.showOpenDialog(null);
                 if (ventana == JFileChooser.APPROVE_OPTION){
                     File archivoImagen = archivo.getSelectedFile();
-                    try {
-                        // Leer la imagen desde el archivo seleccionado
-                        FileInputStream Imagen = new FileInputStream(archivo.getSelectedFile());
-                        byte[] imagenBytes= new byte[(int) archivoImagen.length()];
-                        Imagen.close();
-                        JFrame imgs = new JFrame("Visor de imagenes");
-                        imgs.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                        imgs.setContentPane(new Imagen(archivoImagen).Img);
-                        imgs.setLocationRelativeTo(null);
-                        imgs.setResizable(false);
-                        imgs.pack();
-                        imgs.setSize(400, 400);
-                        imgs.setVisible(true);
-                        usuario.setImagen(imagenBytes);
-
-                        JOptionPane.showMessageDialog(Ventana_principal, "Imagen cargada y lista para ser insertada en la base de datos", "Acción Exitosa", JOptionPane.INFORMATION_MESSAGE);
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
+                    JFrame imgs = new JFrame("Visor de imagenes");
+                    imgs.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                    imgs.setContentPane(new Imagen(archivoImagen, usuario).Img);
+                    imgs.setLocationRelativeTo(null);
+                    imgs.setResizable(false);
+                    imgs.pack();
+                    imgs.setSize(400, 400);
+                    imgs.setVisible(true);
                 }
             }
         });
-
 
         eliminarButton.addActionListener(new ActionListener() {
             @Override
@@ -148,7 +132,7 @@ public class Ventana_Principal {
                     }
                 }
                 else{
-                    JOptionPane.showMessageDialog(Ventana_principal, "Llene el campo antes ed presionar el boton", "Accion invalida", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(Ventana_principal, "Llene el campo requerido antes de presionar el boton 'Eliminar'", "Accion invalida", JOptionPane.ERROR_MESSAGE);
                 }
 
             }
